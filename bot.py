@@ -45,4 +45,4 @@ def index():
     return "Your bot is running!"
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=8080)
