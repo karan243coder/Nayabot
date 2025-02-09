@@ -2,8 +2,7 @@ from flask import Flask
 import asyncio
 import random
 from telegram import Bot, Update
-from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes
-from telegram.ext.filters import TEXT
+from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters
 
 app = Flask(__name__)
 
@@ -36,7 +35,7 @@ app_telegram = Application.builder().token(BOT_TOKEN).build()
 app_telegram.add_handler(CommandHandler('start', start))
 
 # Message handler (text messages)
-app_telegram.add_handler(MessageHandler(TEXT & ~TEXT.COMMAND, generate_image))  # अब यह सिर्फ टेक्स्ट मैसेज लेगा
+app_telegram.add_handler(MessageHandler(filters.TEXT, generate_image))  # बस `filters.TEXT` रखना है
 
 @app.route('/')
 def index():
