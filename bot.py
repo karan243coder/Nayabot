@@ -40,16 +40,11 @@ app_telegram.add_handler(MessageHandler(TEXT, generate_image))
 def index():
     return "Your bot is running!"
 
-# Run both Flask and Telegram bot together
-async def main():
-    # Start Telegram bot
-    task1 = asyncio.create_task(app_telegram.run_polling())
-    
-    # Start Flask server
+# Run both Flask and Telegram bot together in an existing event loop
+def run():
     loop = asyncio.get_event_loop()
-    task2 = loop.run_in_executor(None, app.run, "0.0.0.0", 8080)
-
-    await asyncio.gather(task1, task2)
+    loop.create_task(app_telegram.run_polling())  # Run Telegram bot as a background task
+    app.run(host="0.0.0.0", port=8080, threaded=True)  # Run Flask server
 
 if __name__ == '__main__':
-    asyncio.run(main())  # Run both Telegram bot & Flask together
+    run()
