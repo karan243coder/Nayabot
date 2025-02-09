@@ -1,5 +1,5 @@
 from flask import Flask
-import requests
+import asyncio
 import random
 from telegram import Bot
 from telegram.ext import Application, CommandHandler, MessageHandler
@@ -36,16 +36,20 @@ app_telegram.add_handler(CommandHandler('start', start))
 # Message handler
 app_telegram.add_handler(MessageHandler(TEXT, generate_image))
 
-# Start the bot in the background
-async def run_bot():
-    await app_telegram.run_polling()
-
-import threading
-threading.Thread(target=lambda: app_telegram.run_polling(), daemon=True).start()
-
 @app.route('/')
 def index():
     return "Your bot is running!"
 
+# Run both Flask and Telegram bot together
+async def main():
+    # Start Telegram bot
+    task1 = asyncio.create_task(app_telegram.run_polling())
+    
+    # Start Flask server
+    loop = asyncio.get_event_loop()
+    task2 = loop.run_in_executor(None, app.run, "0.0.0.0", 8080)
+
+    await asyncio.gather(task1, task2)
+
 if __name__ == '__main__':
-    app.run(port=8080)
+    asyncio.run(main())  # Run both Telegram bot & Flask together
