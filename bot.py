@@ -6,7 +6,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 app = Flask(__name__)
 
 # Your Telegram Bot Token
-BOT_TOKEN = 'YOUR_BOT_TOKEN'
+BOT_TOKEN = '7429555769:AAE8lvgGc5uJLP7fH44_WT6-pdHNWwbXe9w'
 bot = Bot(token=BOT_TOKEN)
 
 # Function to handle messages from users
