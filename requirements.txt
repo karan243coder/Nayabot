@@ -2,4 +2,6 @@ Flask
 python-telegram-bot
 requests
 werkzeug
-gunicorn 
+gunicorn
+aiohttp
+Pillow
